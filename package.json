@@ -1,0 +1,24 @@
+{
+  "name": "egg-label-printer",
+  "version": "1.0.0",
+  "description": "Prints egg labels on label printer",
+  "author": {
+    "name": "Niklas Ljung",
+    "email": "niklas@hallfors.se",
+    "url": "https://hallfors.se"
+  },
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "cd server && nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev:server": "cd client && yarn build && cd .. && yarn start",
+    "start": "cd server && node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
