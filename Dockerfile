@@ -29,11 +29,14 @@ RUN apt-get install xvfb -y
 ENV LANG=C.UTF-8
 RUN apt-get install fonts-dejavu -y
 RUN fc-cache
-
+#COPY printerConfig/printers.conf /etc/cups/
+#COPY printerConfig/Brother-QL-560.ppd /etc/cups/ppd
+RUN apt-get install printer-driver-ptouch cups cups-client -y
+RUN apt-get install vim -y
 
 # Bundle app source
 COPY . .
 
 ENV NODE_ENV=production 
 EXPOSE 5000
-CMD [ "yarn", "dev:server" ]
+CMD [ ./start.sh ]

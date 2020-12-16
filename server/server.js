@@ -29,8 +29,8 @@ app.post('/api/print', (req, res) => {
 	console.log(csvString);
 
 	fs.writeFileSync(csvFile, csvString);
-	var command = 'xvfb-run glabels-batch-qt --define eggtype="' + animal + '" label.glabels -o test.pdf';
-	//var command = 'glabels-batch-qt --define eggtype="' + animal + '" label.glabels';
+	//var command = 'xvfb-run glabels-batch-qt --define eggtype="' + animal + '" label.glabels -o test.pdf';
+	var command = 'xvfb-run glabels-batch-qt --define eggtype="' + animal + '" label.glabels';
 	console.log("Running command: " + command);
 	execSync(command);
 	console.log(response);
