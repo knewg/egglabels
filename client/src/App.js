@@ -37,7 +37,7 @@ class App extends Component {
 	state = { 
 		printButtonOverride: false,
 		animal: '',
-		dateFrom: parseDate(adjustDate(new Date(), -7)),
+		dateFrom: parseDate(new Date()),
 		dateTo: parseDate(new Date()),
 		dates: [
 		]
@@ -48,12 +48,16 @@ class App extends Component {
 	};
 
 	renderAnimalSelect() {
-		return Object.keys(animals).map((animal) => {
-			const { name } = animals[animal] //destructuring
+		return Object.keys(animals).map((eggtype) => {
+			const { name } = animals[eggtype] //destructuring
 			return (
-				<option value={animal}>{name}</option>
+				<button onClick={e => this.setState({ animal: eggtype })} disabled={this.isAnimalType(eggtype)}>{name}</button>
 			)
 		});
+	}
+	
+	isAnimalType(animal) {
+		return this.state.animal == animal;
 	}
 
 	toggleDate = (index) => {
@@ -95,7 +99,6 @@ class App extends Component {
 		});
 		const body = await response.text();
 
-		alert( body );
 		this.setState({ printButtonOverride: false });
 
 	}
@@ -118,7 +121,7 @@ class App extends Component {
 		});
 	}
 
-	generateDates(numPerDay) {
+	generateDates(numPerDay, callback) {
 		var dates = [];
 		console.log(this.state.dateFrom);
 		console.log(this.state.dateTo);
@@ -139,9 +142,15 @@ class App extends Component {
 			}
 			fromDate.setDate(fromDate.getDate() + 1); //Go one day ahead
 		}
-		this.setState({ dates : dates });
+		if(callback == null)
+			this.setState({ dates : dates });
+		else
+			this.setState({ dates : dates }, callback);
 		
 	};
+	generateAndPrint(numPerDay) {
+		this.generateDates(numPerDay, this.confirmPrintLabels);
+	}
 
 	allowPrintButton() {
 		if(this.state.animal === "")
@@ -151,6 +160,11 @@ class App extends Component {
 		if(this.state.printButtonOverride === true)
 			return false;
 
+		return true;
+	}
+	allowInstantPrintButton() {
+		if(this.state.animal === "")
+			return false;
 		return true;
 	}
 
@@ -181,17 +195,29 @@ class App extends Component {
 			<strong>Animal:</strong>
 			</p>
 			<p>
-			<select onChange={e => this.setState({ animal: e.target.value })}>
-				<option value='' default></option>
-				{this.renderAnimalSelect()}
-			</select>
+			{this.renderAnimalSelect()}
 			</p>
+
+			<p>
+			<strong>Quick print:</strong>
+			</p>
+			<p>
+			<button onClick={e => this.generateAndPrint(1)} disabled={!this.allowInstantPrintButton()} >1 Every day</button>
+			<button onClick={e => this.generateAndPrint(2)} disabled={!this.allowInstantPrintButton()} >2 Every day</button>
+			<button onClick={e => this.generateAndPrint(3)} disabled={!this.allowInstantPrintButton()} >3 Every day</button>
+			</p>
+			
+			<hr />
+
 			<p>
 			<strong>Generate:</strong>
 			</p>
+			<p>
 			<button onClick={e => this.generateDates(1)}>1 Every day</button>
 			<button onClick={e => this.generateDates(2)}>2 Every day</button>
 			<button onClick={e => this.generateDates(3)}>3 Every day</button>
+			</p>
+
 			<p>{this.state.responseToPost}</p>
 			<Table toggleDate={this.toggleDate} dates={this.state.dates} />	
 			<p>
