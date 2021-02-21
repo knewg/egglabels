@@ -244,7 +244,7 @@ USE -dNOINTERPOLATE -sDEVICE=cups %A%Z -sOutputFile=- - | rastertoptch&&
 
 *OpenUI *CutMedia/Auto Cut: PickOne
 *OrderDependency: 110 AnySetup *CutMedia
-*DefaultCutMedia: Off
+*DefaultCutMedia: LabelEnd
 *CutMedia JobEnd/Cut the medium at the end of the job: "<</CutMedia 2>>setpagedevice"
 *CutMedia LabelEnd/Cut the medium after each label: "<</CutMedia 4>>setpagedevice"
 *CutMedia Off/Do not cut the medium: "<</CutMedia 0>>setpagedevice"

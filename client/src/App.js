@@ -28,7 +28,7 @@ const animals = {
 		'name': 'Chicken',
 		'label': 'Hönsägg',
 		'perBox': 6,
-		'days': 30
+		'days': 28
 	}
 }
 
